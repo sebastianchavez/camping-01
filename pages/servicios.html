@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Servicios — Camping Pinar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { forest: '#2d5016', 'forest-light': '#3a6b1c', orange: '#ea580c', 'orange-dark': '#c2410c', cream: '#fef3e2', earth: '#78350f' },
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Poppins','system-ui','sans-serif'] }
+    }}
+  };
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="bg-cream font-sans text-gray-800">
+
+<div id="app-navbar"></div>
+
+<!-- HERO -->
+<section class="relative text-white py-16 bg-forest bg-cover bg-center" style="background-image: linear-gradient(rgba(45, 80, 22, 0.70), rgba(58, 107, 28, 0.75)), url('https://images.unsplash.com/photo-1455496231601-e6195da1f841?w=1920&q=80&auto=format&fit=crop');">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in">
+    <h1 class="font-display text-4xl md:text-5xl font-bold mb-3">Nuestros servicios</h1>
+    <p class="text-cream/90 text-lg max-w-2xl mx-auto">Descubre todo lo que tenemos para ofrecerte. Servicios base para tu alojamiento y extras para personalizar tu experiencia.</p>
+  </div>
+</section>
+
+<!-- ALOJAMIENTO -->
+<section class="py-16 bg-cream">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-10">
+      <span class="inline-block bg-orange/10 text-orange px-4 py-1 rounded-full text-sm font-medium mb-3">Alojamiento</span>
+      <h2 class="font-display text-3xl font-bold text-forest">Elige donde descansar</h2>
+    </div>
+    <div id="grid-alojamiento" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+  </div>
+</section>
+
+<!-- EXTRAS -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-10">
+      <span class="inline-block bg-forest/10 text-forest px-4 py-1 rounded-full text-sm font-medium mb-3">Servicios extra</span>
+      <h2 class="font-display text-3xl font-bold text-forest">Complementa tu experiencia</h2>
+    </div>
+    <div id="grid-extras" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 relative bg-cover bg-center" style="background-image: linear-gradient(rgba(234, 88, 12, 0.92), rgba(194, 65, 12, 0.92)), url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&q=80&auto=format&fit=crop');">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+    <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">¿Listo para reservar?</h2>
+    <p class="mb-6 text-white/90">Combina alojamiento y extras en tu próxima aventura.</p>
+    <a href="reserva.html" class="inline-block bg-white text-orange font-bold px-8 py-3 rounded-xl hover:bg-cream transition shadow-xl">
+      Crear mi reserva
+    </a>
+  </div>
+</section>
+
+<div id="app-footer"></div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+const ICONS = {
+  tent: '⛺',
+  caravan: '🚐',
+  cabin: '🏠',
+  bolt: '⚡',
+  wifi: '📶',
+  grill: '🔥',
+  compass: '🧭',
+  restaurant: '🍽️',
+  kayak: '🛶'
+};
+
+const IMAGES = {
+  'parcela-tienda':    'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=900&q=80&auto=format&fit=crop',
+  'parcela-caravana':  'https://images.unsplash.com/photo-1533873984035-25970ab07461?w=900&q=80&auto=format&fit=crop',
+  'cabana':            'https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?w=900&q=80&auto=format&fit=crop',
+  'electricidad':      'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900&q=80&auto=format&fit=crop',
+  'wifi':              'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=80&auto=format&fit=crop',
+  'parrilla':          'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=900&q=80&auto=format&fit=crop',
+  'actividades':       'https://images.unsplash.com/photo-1551632811-561732d1e306?w=900&q=80&auto=format&fit=crop',
+  'restaurante':       'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&q=80&auto=format&fit=crop',
+  'kayak':             'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=900&q=80&auto=format&fit=crop'
+};
+
+function renderCard(s) {
+  const img = IMAGES[s.id] || 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=900&q=80&auto=format&fit=crop';
+  const overlay = s.type === 'base'
+    ? 'from-forest/80 via-forest/20 to-transparent'
+    : 'from-orange/70 via-orange/10 to-transparent';
+  return `
+    <div class="card-hover rounded-2xl border border-gray-100 overflow-hidden bg-cream shadow-md">
+      <div class="relative h-44 bg-forest bg-cover bg-center" style="background-image: url('${img}');">
+        <div class="absolute inset-0 bg-gradient-to-t ${overlay}"></div>
+        <span class="absolute top-3 right-3 text-5xl drop-shadow-lg">${ICONS[s.icon] || '✨'}</span>
+      </div>
+      <div class="p-6">
+        <h3 class="font-display text-xl font-bold text-forest mb-2">${s.name}</h3>
+        <p class="text-gray-600 text-sm mb-4">${s.description}</p>
+        <div class="flex items-center justify-between pt-3 border-t border-gray-200">
+          <div>
+            <span class="text-2xl font-bold text-orange">${formatPEN(s.price)}</span>
+            <span class="text-gray-500 text-sm"> / noche</span>
+          </div>
+          <a href="reserva.html" class="px-4 py-2 bg-forest text-white text-sm font-semibold rounded-lg hover:bg-forest-light transition">Reservar</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+document.getElementById('grid-alojamiento').innerHTML =
+  SERVICES_CATALOG.filter(s => s.type === 'base').map(renderCard).join('');
+
+document.getElementById('grid-extras').innerHTML =
+  SERVICES_CATALOG.filter(s => s.type === 'extra').map(renderCard).join('');
+</script>
+</body>
+</html>

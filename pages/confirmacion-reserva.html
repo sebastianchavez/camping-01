@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reserva confirmada — Camping Pinar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { forest: '#2d5016', 'forest-light': '#3a6b1c', orange: '#ea580c', 'orange-dark': '#c2410c', cream: '#fef3e2', earth: '#78350f' },
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Poppins','system-ui','sans-serif'] }
+    }}
+  };
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="bg-cream font-sans text-gray-800">
+
+<div id="app-navbar"></div>
+
+<main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center fade-in">
+    <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-green-100 flex items-center justify-center">
+      <svg class="w-14 h-14 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+      </svg>
+    </div>
+    <h1 class="font-display text-3xl md:text-4xl font-bold text-forest mb-3">¡Reserva confirmada!</h1>
+    <p class="text-gray-600 text-lg mb-6">Tu reserva ha sido creada exitosamente. Guarda tu código de confirmación.</p>
+
+    <div id="reservation-info" class="bg-cream rounded-xl p-6 text-left mb-6"></div>
+
+    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-8 text-sm text-yellow-800">
+      <p class="font-semibold mb-1">⏳ Tu reserva está pendiente de pago</p>
+      <p>Realiza el pago ahora para confirmar definitivamente tu estadía. Tienes 24 horas.</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="pago.html" id="btn-pagar" class="px-6 py-3 bg-orange hover:bg-orange-dark text-white font-bold rounded-lg transition shadow-md">
+        💳 Ir a pagar
+      </a>
+      <a href="perfil.html" class="px-6 py-3 bg-forest hover:bg-forest-light text-white font-bold rounded-lg transition shadow-md">
+        📋 Ver mis reservas
+      </a>
+      <a href="../index.html" class="px-6 py-3 border border-gray-300 hover:bg-gray-100 font-semibold rounded-lg transition">
+        🏠 Volver al inicio
+      </a>
+    </div>
+  </div>
+</main>
+
+<div id="app-footer"></div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/reservations.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id') || localStorage.getItem('camping_last_reservation');
+const r = id ? getReservationById(id) : null;
+const slot = document.getElementById('reservation-info');
+const btnPagar = document.getElementById('btn-pagar');
+
+if (!r) {
+  slot.innerHTML = '<p class="text-red-600">No se encontró la reserva. Vuelve a intentarlo desde el formulario.</p>';
+  btnPagar.style.display = 'none';
+} else {
+  const base = SERVICES_CATALOG.find(s => s.id === r.alojamientoId);
+  const extras = r.extrasIds.map(id => SERVICES_CATALOG.find(s => s.id === id)).filter(Boolean);
+  btnPagar.href = 'pago.html?id=' + r.id;
+  slot.innerHTML = `
+    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+      <div>
+        <p class="text-xs text-gray-500 uppercase">Código de reserva</p>
+        <p class="font-mono text-xl font-bold text-forest">${r.id}</p>
+      </div>
+      ${statusBadge(r.estado)}
+    </div>
+    <div class="grid grid-cols-2 gap-4 text-sm">
+      <div><p class="text-gray-500">Alojamiento</p><p class="font-semibold text-forest">${base ? base.name : '—'}</p></div>
+      <div><p class="text-gray-500">Personas</p><p class="font-semibold">${r.personas}</p></div>
+      <div><p class="text-gray-500">Entrada</p><p class="font-semibold">${formatDate(r.checkIn)}</p></div>
+      <div><p class="text-gray-500">Salida</p><p class="font-semibold">${formatDate(r.checkOut)}</p></div>
+      <div><p class="text-gray-500">Noches</p><p class="font-semibold">${r.noches}</p></div>
+      <div><p class="text-gray-500">Total</p><p class="font-bold text-orange text-lg">${formatPEN(r.total)}</p></div>
+    </div>
+    ${extras.length ? `
+      <div class="mt-4 pt-4 border-t border-gray-200">
+        <p class="text-xs text-gray-500 uppercase mb-2">Servicios extra</p>
+        <div class="flex flex-wrap gap-2">
+          ${extras.map(e => `<span class="bg-forest/10 text-forest text-xs px-3 py-1 rounded-full">${e.name}</span>`).join('')}
+        </div>
+      </div>
+    ` : ''}
+  `;
+}
+</script>
+</body>
+</html>

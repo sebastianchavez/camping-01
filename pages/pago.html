@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pago de reserva — Camping Pinar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { forest: '#2d5016', 'forest-light': '#3a6b1c', orange: '#ea580c', 'orange-dark': '#c2410c', cream: '#fef3e2', earth: '#78350f' },
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Poppins','system-ui','sans-serif'] }
+    }}
+  };
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="bg-cream font-sans text-gray-800">
+
+<div id="app-navbar"></div>
+
+<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <a id="back-link" href="#" class="inline-flex items-center gap-1 text-forest hover:text-orange mb-4 font-medium">
+    ← Volver
+  </a>
+
+  <h1 class="font-display text-3xl font-bold text-forest mb-6">Procesar pago</h1>
+
+  <div id="payment-area" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- RESUMEN -->
+    <aside class="lg:col-span-1 order-2 lg:order-1">
+      <div id="summary-card" class="bg-white rounded-2xl shadow-md p-6 sticky top-24">
+        <h3 class="font-display text-xl font-bold text-forest mb-4">Resumen</h3>
+        <div id="summary-content"></div>
+      </div>
+    </aside>
+
+    <!-- FORMULARIO DE PAGO -->
+    <section class="lg:col-span-2 order-1 lg:order-2 space-y-6">
+
+      <div class="bg-white rounded-2xl shadow-md p-6 md:p-8">
+        <h2 class="font-display text-xl font-bold text-forest mb-4">1. Método de pago</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="methods">
+          <label class="cursor-pointer">
+            <input type="radio" name="method" value="tarjeta" checked class="peer sr-only method-radio" />
+            <div class="border-2 border-gray-200 peer-checked:border-orange peer-checked:bg-orange/5 rounded-xl p-3 text-center transition hover:border-forest">
+              <div class="text-3xl mb-1">💳</div>
+              <p class="text-xs font-semibold">Tarjeta</p>
+            </div>
+          </label>
+          <label class="cursor-pointer">
+            <input type="radio" name="method" value="yape" class="peer sr-only method-radio" />
+            <div class="border-2 border-gray-200 peer-checked:border-orange peer-checked:bg-orange/5 rounded-xl p-3 text-center transition hover:border-forest">
+              <div class="text-3xl mb-1">📱</div>
+              <p class="text-xs font-semibold">Yape</p>
+            </div>
+          </label>
+          <label class="cursor-pointer">
+            <input type="radio" name="method" value="plin" class="peer sr-only method-radio" />
+            <div class="border-2 border-gray-200 peer-checked:border-orange peer-checked:bg-orange/5 rounded-xl p-3 text-center transition hover:border-forest">
+              <div class="text-3xl mb-1">💜</div>
+              <p class="text-xs font-semibold">Plin</p>
+            </div>
+          </label>
+          <label class="cursor-pointer">
+            <input type="radio" name="method" value="transferencia" class="peer sr-only method-radio" />
+            <div class="border-2 border-gray-200 peer-checked:border-orange peer-checked:bg-orange/5 rounded-xl p-3 text-center transition hover:border-forest">
+              <div class="text-3xl mb-1">🏦</div>
+              <p class="text-xs font-semibold">Transfer.</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div id="method-detail" class="bg-white rounded-2xl shadow-md p-6 md:p-8"></div>
+
+      <button id="btn-pay" class="w-full bg-orange hover:bg-orange-dark text-white font-bold py-4 rounded-xl shadow-lg transition text-lg">
+        🔒 Pagar ahora
+      </button>
+
+      <p class="text-xs text-gray-500 text-center">
+        🔒 Esta es una transacción simulada. No se procesará ningún cargo real.
+      </p>
+    </section>
+  </div>
+</main>
+
+<div id="app-footer"></div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/reservations.js"></script>
+<script src="../assets/js/payment.js"></script>
+<script>
+if (!requireAuth()) throw new Error('No auth');
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+const r = id ? getReservationById(id) : null;
+
+if (!r || r.userId !== getSession().userId) {
+  document.getElementById('payment-area').innerHTML = `
+    <div class="lg:col-span-3 text-center py-12">
+      <p class="text-5xl mb-3">❓</p>
+      <p class="text-gray-600">No se encontró la reserva.</p>
+      <a href="perfil.html" class="inline-block mt-4 px-5 py-2 bg-forest text-white rounded-lg">Volver a mis reservas</a>
+    </div>`;
+} else {
+  document.getElementById('back-link').href = 'detalle-reserva.html?id=' + r.id;
+
+  const base = SERVICES_CATALOG.find(s => s.id === r.alojamientoId);
+  document.getElementById('summary-content').innerHTML = `
+    <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
+      <span class="font-mono text-xs text-gray-500">${r.id}</span>
+      ${statusBadge(r.estado)}
+    </div>
+    <div class="space-y-2 text-sm">
+      <div class="flex justify-between"><span class="text-gray-500">Alojamiento</span><span class="font-semibold">${base ? base.name : '—'}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">Fechas</span><span class="font-semibold">${formatDateShort(r.checkIn)} - ${formatDateShort(r.checkOut)}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">Noches</span><span class="font-semibold">${r.noches}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">Personas</span><span class="font-semibold">${r.personas}</span></div>
+    </div>
+    <div class="border-t-2 border-forest mt-3 pt-3 flex justify-between items-center">
+      <span class="font-bold text-forest">TOTAL</span>
+      <span class="text-xl font-bold text-orange">${formatPEN(r.total)}</span>
+    </div>
+  `;
+
+  function renderMethodDetail(method) {
+      if (method === 'tarjeta') {
+        return `
+          <h2 class="font-display text-xl font-bold text-forest mb-4">2. Datos de la tarjeta</h2>
+          <form id="card-form" class="space-y-4" novalidate>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Número de tarjeta</label>
+              <input type="text" id="card-number" maxlength="19" required placeholder="0000 0000 0000 0000"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Titular de la tarjeta</label>
+              <input type="text" id="card-holder" required placeholder="Como aparece en la tarjeta"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Vencimiento (MM/AA)</label>
+                <input type="text" id="card-expiry" maxlength="5" required placeholder="12/28"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                <input type="password" id="card-cvv" maxlength="4" required placeholder="123"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+              </div>
+            </div>
+          </form>
+        `;
+      }
+      if (method === 'yape' || method === 'plin') {
+        return `
+          <h2 class="font-display text-xl font-bold text-forest mb-4">2. Pago con ${method === 'yape' ? 'Yape' : 'Plin'}</h2>
+          <div class="bg-cream rounded-xl p-6 text-center">
+            <p class="text-sm text-gray-700 mb-4">Escanea el código QR desde tu app o realiza la transferencia al siguiente número:</p>
+            <div class="bg-forest text-white inline-block px-8 py-4 rounded-xl text-3xl font-bold tracking-widest mb-3">
+              987 654 321
+            </div>
+            <p class="text-sm font-semibold text-forest">${paymentMethodLabel(method)}</p>
+            <p class="text-xs text-gray-500 mt-1">Titular: Camping Pinar S.A.C.</p>
+          </div>
+          <div class="mt-5 bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-900">
+            <p>📲 Una vez realizada la transferencia, presiona el botón <strong>Pagar ahora</strong> para confirmar tu pago.</p>
+          </div>
+        `;
+      }
+      if (method === 'transferencia') {
+        return `
+          <h2 class="font-display text-xl font-bold text-forest mb-4">2. Transferencia bancaria</h2>
+          <div class="bg-cream rounded-xl p-6 space-y-3 text-sm">
+            <div class="flex justify-between"><span class="text-gray-500">Banco:</span><strong>BCP</strong></div>
+            <div class="flex justify-between"><span class="text-gray-500">Cuenta:</span><strong class="font-mono">193-1234567-0-12</strong></div>
+            <div class="flex justify-between"><span class="text-gray-500">CCI:</span><strong class="font-mono">002-193-001234567012-15</strong></div>
+            <div class="flex justify-between"><span class="text-gray-500">Titular:</span><strong>Camping Pinar S.A.C.</strong></div>
+            <div class="flex justify-between"><span class="text-gray-500">RUC:</span><strong>20123456789</strong></div>
+          </div>
+          <div class="mt-5 bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-900">
+            <p>🏦 Realiza la transferencia por el monto exacto y presiona <strong>Pagar ahora</strong>.</p>
+          </div>
+        `;
+      }
+    }
+    function getSelectedMethod() {
+      return document.querySelector('.method-radio:checked').value;
+    }
+    function refreshDetail() {
+      document.getElementById('method-detail').innerHTML = renderMethodDetail(getSelectedMethod());
+      bindFormatHelpers();
+    }
+    document.querySelectorAll('.method-radio').forEach(r => r.addEventListener('change', refreshDetail));
+
+    function bindFormatHelpers() {
+      const num = document.getElementById('card-number');
+      if (num) num.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 19);
+        v = v.replace(/(.{4})/g, '$1 ').trim();
+        e.target.value = v;
+      });
+      const exp = document.getElementById('card-expiry');
+      if (exp) exp.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 4);
+        if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+        e.target.value = v;
+      });
+    }
+    refreshDetail();
+
+    const btnPay = document.getElementById('btn-pay');
+    btnPay.addEventListener('click', async () => {
+      const method = getSelectedMethod();
+      let cardData = null;
+      if (method === 'tarjeta') {
+        cardData = {
+          number: document.getElementById('card-number').value,
+          holder: document.getElementById('card-holder').value,
+          expiry: document.getElementById('card-expiry').value,
+          cvv: document.getElementById('card-cvv').value
+        };
+      }
+      btnPay.disabled = true;
+      btnPay.innerHTML = '<span class="spinner mr-2"></span> Procesando pago...';
+
+      const result = await processPayment({ reservationId: r.id, method, cardData });
+
+      if (!result.ok) {
+        toast(result.message, 'error');
+        btnPay.disabled = false;
+        btnPay.innerHTML = '🔒 Pagar ahora';
+        return;
+      }
+
+      localStorage.setItem('camping_last_payment', JSON.stringify(result.payment));
+      localStorage.setItem('camping_last_paid_reservation', r.id);
+      window.location.href = 'confirmacion-pago.html';
+    });
+}
+</script>
+</body>
+</html>

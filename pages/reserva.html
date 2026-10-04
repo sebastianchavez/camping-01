@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reservar — Camping Pinar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { forest: '#2d5016', 'forest-light': '#3a6b1c', orange: '#ea580c', 'orange-dark': '#c2410c', cream: '#fef3e2', earth: '#78350f' },
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Poppins','system-ui','sans-serif'] }
+    }}
+  };
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="bg-cream font-sans text-gray-800">
+
+<div id="app-navbar"></div>
+
+<section class="bg-gradient-to-r from-forest to-forest-light text-white py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 fade-in">
+    <h1 class="font-display text-3xl md:text-4xl font-bold mb-2">Reserva tu estadía</h1>
+    <p class="text-cream/90">Completa los pasos para confirmar tu reserva en Camping Pinar.</p>
+  </div>
+</section>
+
+<!-- STEP INDICATOR -->
+<div class="bg-white border-b border-gray-200 sticky top-16 z-30">
+  <div class="max-w-5xl mx-auto px-4 py-4">
+    <ol class="flex items-center justify-between gap-2 text-xs sm:text-sm">
+      <li class="flex items-center gap-2 flex-1" data-step-indicator="1">
+        <span class="step-circle w-8 h-8 rounded-full flex items-center justify-center font-bold step-active">1</span>
+        <span class="hidden sm:inline font-medium">Fechas</span>
+      </li>
+      <li class="flex-1 h-0.5 bg-gray-200" data-step-line="1"></li>
+      <li class="flex items-center gap-2 flex-1" data-step-indicator="2">
+        <span class="step-circle w-8 h-8 rounded-full flex items-center justify-center font-bold step-todo">2</span>
+        <span class="hidden sm:inline font-medium">Servicios</span>
+      </li>
+      <li class="flex-1 h-0.5 bg-gray-200" data-step-line="2"></li>
+      <li class="flex items-center gap-2 flex-1" data-step-indicator="3">
+        <span class="step-circle w-8 h-8 rounded-full flex items-center justify-center font-bold step-todo">3</span>
+        <span class="hidden sm:inline font-medium">Resumen</span>
+      </li>
+      <li class="flex-1 h-0.5 bg-gray-200" data-step-line="3"></li>
+      <li class="flex items-center gap-2 flex-1" data-step-indicator="4">
+        <span class="step-circle w-8 h-8 rounded-full flex items-center justify-center font-bold step-todo">4</span>
+        <span class="hidden sm:inline font-medium">Confirmar</span>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <!-- STEP 1: FECHAS -->
+  <section data-step="1" class="bg-white rounded-2xl shadow-md p-6 md:p-8 fade-in">
+    <h2 class="font-display text-2xl font-bold text-forest mb-1">1. Fechas y alojamiento</h2>
+    <p class="text-gray-600 text-sm mb-6">Selecciona las fechas de tu estadía y el tipo de alojamiento.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de entrada</label>
+        <input type="date" id="check-in" required
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de salida</label>
+        <input type="date" id="check-out" required
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Número de personas</label>
+        <input type="number" id="personas" min="1" max="20" value="2"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Noches</label>
+        <input type="text" id="noches-display" value="—" readonly
+          class="w-full px-4 py-3 border border-gray-200 bg-cream rounded-lg text-gray-600" />
+      </div>
+    </div>
+
+    <h3 class="font-semibold text-forest mt-8 mb-3">Tipo de alojamiento</h3>
+    <div id="alojamiento-options" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+
+    <div class="flex justify-end mt-8">
+      <button class="px-8 py-3 bg-orange hover:bg-orange-dark text-white font-bold rounded-lg transition" data-action="next">
+        Continuar →
+      </button>
+    </div>
+  </section>
+
+  <!-- STEP 2: SERVICIOS EXTRA -->
+  <section data-step="2" class="bg-white rounded-2xl shadow-md p-6 md:p-8 fade-in hidden">
+    <h2 class="font-display text-2xl font-bold text-forest mb-1">2. Servicios extra</h2>
+    <p class="text-gray-600 text-sm mb-6">Personaliza tu estadía con servicios adicionales.</p>
+
+    <div id="extras-options" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+
+    <div class="flex justify-between mt-8">
+      <button class="px-6 py-3 border border-gray-300 hover:bg-gray-100 font-semibold rounded-lg transition" data-action="prev">← Atrás</button>
+      <button class="px-8 py-3 bg-orange hover:bg-orange-dark text-white font-bold rounded-lg transition" data-action="next">Continuar →</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: RESUMEN -->
+  <section data-step="3" class="bg-white rounded-2xl shadow-md p-6 md:p-8 fade-in hidden">
+    <h2 class="font-display text-2xl font-bold text-forest mb-1">3. Resumen</h2>
+    <p class="text-gray-600 text-sm mb-6">Revisa los detalles y el precio de tu reserva.</p>
+
+    <div id="summary" class="bg-cream rounded-xl p-5"></div>
+
+    <div class="flex justify-between mt-8">
+      <button class="px-6 py-3 border border-gray-300 hover:bg-gray-100 font-semibold rounded-lg transition" data-action="prev">← Atrás</button>
+      <button class="px-8 py-3 bg-orange hover:bg-orange-dark text-white font-bold rounded-lg transition" data-action="next">Continuar →</button>
+    </div>
+  </section>
+
+  <!-- STEP 4: CONFIRMAR -->
+  <section data-step="4" class="bg-white rounded-2xl shadow-md p-6 md:p-8 fade-in hidden">
+    <h2 class="font-display text-2xl font-bold text-forest mb-1">4. Confirmar reserva</h2>
+    <p class="text-gray-600 text-sm mb-6">Para finalizar, debes iniciar sesión o registrarte.</p>
+
+    <div id="auth-prompt" class="bg-cream border border-orange/20 rounded-xl p-6 text-center">
+      <p class="text-gray-700 mb-4">Necesitas una cuenta para confirmar la reserva.</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="login.html" class="px-6 py-3 bg-forest hover:bg-forest-light text-white font-bold rounded-lg transition">Iniciar sesión</a>
+        <a href="registro.html" class="px-6 py-3 bg-orange hover:bg-orange-dark text-white font-bold rounded-lg transition">Crear cuenta</a>
+      </div>
+    </div>
+
+    <div id="confirm-block" class="hidden">
+      <div class="bg-cream rounded-xl p-5 mb-6">
+        <h3 class="font-semibold text-forest mb-2">Datos de contacto</h3>
+        <p id="user-info" class="text-sm text-gray-700"></p>
+      </div>
+
+      <div class="bg-cream rounded-xl p-5 mb-6" id="summary-final"></div>
+
+      <button id="btn-confirm" class="w-full bg-orange hover:bg-orange-dark text-white font-bold py-3 rounded-lg">
+        Confirmar y proceder al pago
+      </button>
+    </div>
+
+    <div class="flex justify-start mt-8">
+      <button class="px-6 py-3 border border-gray-300 hover:bg-gray-100 font-semibold rounded-lg transition" data-action="prev">← Atrás</button>
+    </div>
+  </section>
+
+</main>
+
+<div id="app-footer"></div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/reservations.js"></script>
+<script>
+const EXTRA_ICONS = { tent: '⛺', caravan: '🚐', cabin: '🏠', bolt: '⚡', wifi: '📶', grill: '🔥', compass: '🧭', restaurant: '🍽️', kayak: '🛶' };
+const STATE = {
+  step: 1,
+  alojamientoId: null,
+  serviciosExtra: [],
+  get checkIn() { return document.getElementById('check-in').value; },
+  get checkOut() { return document.getElementById('check-out').value; },
+  get personas() { return document.getElementById('personas').value; }
+};
+
+function setMinDates() {
+  const t = todayISO();
+  document.getElementById('check-in').min = t;
+  document.getElementById('check-out').min = t;
+}
+
+function updateNoches() {
+  const ci = document.getElementById('check-in').value;
+  const co = document.getElementById('check-out').value;
+  if (ci && co && new Date(co) > new Date(ci)) {
+    document.getElementById('noches-display').value = diffDays(ci, co) + ' noche(s)';
+  } else {
+    document.getElementById('noches-display').value = '—';
+  }
+}
+
+function renderAlojamiento() {
+  const opts = SERVICES_CATALOG.filter(s => s.type === 'base');
+  document.getElementById('alojamiento-options').innerHTML = opts.map(s => `
+    <label class="cursor-pointer">
+      <input type="radio" name="alojamiento" value="${s.id}" class="peer sr-only" ${STATE.alojamientoId === s.id ? 'checked' : ''} />
+      <div class="border-2 border-gray-200 peer-checked:border-orange peer-checked:bg-orange/5 rounded-xl p-4 transition hover:border-forest">
+        <div class="text-4xl mb-2">${EXTRA_ICONS[s.icon] || '✨'}</div>
+        <p class="font-bold text-forest">${s.name}</p>
+        <p class="text-xs text-gray-600 mt-1 mb-2">${s.description}</p>
+        <p class="text-orange font-bold">${formatPEN(s.price)} <span class="text-xs text-gray-500">/ noche</span></p>
+      </div>
+    </label>
+  `).join('');
+  document.querySelectorAll('input[name="alojamiento"]').forEach(r => {
+    r.addEventListener('change', (e) => { STATE.alojamientoId = e.target.value; });
+  });
+}
+
+function renderExtras() {
+  const opts = SERVICES_CATALOG.filter(s => s.type === 'extra');
+  document.getElementById('extras-options').innerHTML = opts.map(s => `
+    <label class="cursor-pointer">
+      <input type="checkbox" value="${s.id}" class="peer sr-only extra-cb" ${STATE.serviciosExtra.includes(s.id) ? 'checked' : ''} />
+      <div class="border-2 border-gray-200 peer-checked:border-forest peer-checked:bg-forest/5 rounded-xl p-4 flex gap-3 items-start transition hover:border-forest">
+        <span class="text-3xl">${EXTRA_ICONS[s.icon] || '✨'}</span>
+        <div class="flex-1">
+          <p class="font-bold text-forest">${s.name}</p>
+          <p class="text-xs text-gray-600 mt-0.5">${s.description}</p>
+          <p class="text-orange font-bold text-sm mt-1">${formatPEN(s.price)} / noche</p>
+        </div>
+        <div class="w-6 h-6 rounded-full border-2 border-gray-300 peer-checked:bg-forest peer-checked:border-forest flex items-center justify-center text-white text-xs">✓</div>
+      </div>
+    </label>
+  `).join('');
+  document.querySelectorAll('.extra-cb').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      const id = e.target.value;
+      if (e.target.checked) STATE.serviciosExtra.push(id);
+      else STATE.serviciosExtra = STATE.serviciosExtra.filter(x => x !== id);
+    });
+  });
+}
+
+function buildSummary() {
+  if (!STATE.alojamientoId) return '';
+  const ci = STATE.checkIn, co = STATE.checkOut, p = STATE.personas;
+  if (!ci || !co || new Date(co) <= new Date(ci)) return '<p class="text-red-600">Selecciona fechas válidas.</p>';
+  const noches = diffDays(ci, co);
+  const base = SERVICES_CATALOG.find(s => s.id === STATE.alojamientoId);
+  const extras = STATE.serviciosExtra.map(id => SERVICES_CATALOG.find(s => s.id === id)).filter(Boolean);
+  const subtotalBase = base.price * noches;
+  const subtotalExtras = extras.reduce((acc, s) => acc + s.price * noches, 0);
+  const total = subtotalBase + subtotalExtras;
+
+  return `
+    <div class="grid grid-cols-2 gap-3 text-sm mb-4">
+      <div><span class="text-gray-500">Entrada:</span> <strong>${formatDate(ci)}</strong></div>
+      <div><span class="text-gray-500">Salida:</span> <strong>${formatDate(co)}</strong></div>
+      <div><span class="text-gray-500">Noches:</span> <strong>${noches}</strong></div>
+      <div><span class="text-gray-500">Personas:</span> <strong>${p}</strong></div>
+    </div>
+    <div class="border-t border-gray-200 pt-3 space-y-2">
+      <div class="flex justify-between">
+        <span>${base.name} <span class="text-gray-500 text-xs">(${noches} noches)</span></span>
+        <strong>${formatPEN(subtotalBase)}</strong>
+      </div>
+      ${extras.map(s => `
+        <div class="flex justify-between text-gray-700">
+          <span>${s.name} <span class="text-gray-500 text-xs">(${noches} noches)</span></span>
+          <span>${formatPEN(s.price * noches)}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="border-t-2 border-forest mt-3 pt-3 flex justify-between items-center">
+      <span class="font-bold text-forest">TOTAL</span>
+      <span class="text-2xl font-bold text-orange">${formatPEN(total)}</span>
+    </div>
+  `;
+}
+
+function refreshStepUI() {
+  document.querySelectorAll('[data-step]').forEach(el => {
+    const s = Number(el.dataset.step);
+    el.classList.toggle('hidden', s !== STATE.step);
+  });
+
+  for (let i = 1; i <= 4; i++) {
+    const indicator = document.querySelector(`[data-step-indicator="${i}"] .step-circle`);
+    if (!indicator) continue;
+    indicator.classList.remove('step-active', 'step-done', 'step-todo');
+    if (i < STATE.step) indicator.classList.add('step-done');
+    else if (i === STATE.step) indicator.classList.add('step-active');
+    else indicator.classList.add('step-todo');
+  }
+
+  for (let i = 1; i <= 3; i++) {
+    const line = document.querySelector(`[data-step-line="${i}"]`);
+    if (!line) continue;
+    line.classList.remove('bg-gray-200', 'bg-forest');
+    if (i < STATE.step) line.classList.add('bg-forest');
+    else line.classList.add('bg-gray-200');
+  }
+
+  if (STATE.step === 3) {
+    document.getElementById('summary').innerHTML = buildSummary();
+  }
+  if (STATE.step === 4) {
+    const session = getSession();
+    const user = session ? findUserById(session.userId) : null;
+    const prompt = document.getElementById('auth-prompt');
+    const block = document.getElementById('confirm-block');
+    if (user) {
+      prompt.classList.add('hidden');
+      block.classList.remove('hidden');
+      document.getElementById('user-info').innerHTML = `
+        <p class="font-semibold text-forest">${user.nombre} ${user.apellidos}</p>
+        <p class="text-gray-600">${user.email} · ${user.telefono}</p>
+      `;
+      document.getElementById('summary-final').innerHTML = buildSummary();
+    } else {
+      prompt.classList.remove('hidden');
+      block.classList.add('hidden');
+    }
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validateStep(n) {
+  document.querySelectorAll('.field-error').forEach(el => el.remove());
+  if (n === 1) {
+    const ci = document.getElementById('check-in');
+    const co = document.getElementById('check-out');
+    const pers = document.getElementById('personas');
+    let ok = true;
+    if (!ci.value) { setFieldError(ci, 'Selecciona fecha de entrada'); ok = false; }
+    if (!co.value) { setFieldError(co, 'Selecciona fecha de salida'); ok = false; }
+    if (ci.value && co.value && new Date(co.value) <= new Date(ci.value)) {
+      setFieldError(co, 'Debe ser posterior a la fecha de entrada'); ok = false;
+    }
+    if (!STATE.alojamientoId) { toast('Selecciona un tipo de alojamiento', 'warn'); ok = false; }
+    if (Number(pers.value) < 1) { setFieldError(pers, 'Mínimo 1 persona'); ok = false; }
+    return ok;
+  }
+  if (n === 2) return true;
+  if (n === 3) return true;
+  if (n === 4) {
+    if (!getSession()) { toast('Debes iniciar sesión para continuar', 'warn'); return false; }
+    return true;
+  }
+  return true;
+}
+
+document.addEventListener('click', (e) => {
+  const action = e.target.closest('[data-action]')?.dataset.action;
+  if (!action) return;
+  if (action === 'next') {
+    if (!validateStep(STATE.step)) return;
+    STATE.step++;
+    refreshStepUI();
+  }
+  if (action === 'prev') {
+    STATE.step--;
+    refreshStepUI();
+  }
+});
+
+document.getElementById('check-in').addEventListener('change', () => {
+  const ci = document.getElementById('check-in').value;
+  const co = document.getElementById('check-out');
+  co.min = ci;
+  if (co.value && co.value < ci) co.value = ci;
+  updateNoches();
+});
+document.getElementById('check-out').addEventListener('change', updateNoches);
+
+document.getElementById('btn-confirm').addEventListener('click', () => {
+  const r = buildReservation({
+    alojamientoId: STATE.alojamientoId,
+    serviciosExtra: STATE.serviciosExtra,
+    checkIn: STATE.checkIn,
+    checkOut: STATE.checkOut,
+    personas: STATE.personas
+  });
+  if (!r.ok) { toast(r.message, 'error'); return; }
+  localStorage.setItem('camping_last_reservation', r.reservation.id);
+  window.location.href = 'confirmacion-reserva.html?id=' + r.reservation.id;
+});
+
+setMinDates();
+renderAlojamiento();
+renderExtras();
+updateNoches();
+</script>
+</body>
+</html>

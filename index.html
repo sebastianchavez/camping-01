@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Camping Pinar — Vive la naturaleza</title>
+<meta name="description" content="Reserva tu próxima aventura en Camping Pinar. Parcelas, cabañas, actividades y más." />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          forest:   '#2d5016',
+          'forest-light': '#3a6b1c',
+          orange:   '#ea580c',
+          'orange-dark': '#c2410c',
+          cream:    '#fef3e2',
+          earth:    '#78350f'
+        },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          display: ['Poppins', 'system-ui', 'sans-serif']
+        }
+      }
+    }
+  };
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body class="bg-cream font-sans text-gray-800">
+
+<div id="app-navbar"></div>
+
+<!-- HERO -->
+<section class="relative text-white bg-forest bg-cover bg-center" style="background-image: linear-gradient(rgba(45, 80, 22, 0.65), rgba(45, 80, 22, 0.55)), url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1920&q=80&auto=format&fit=crop');">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 fade-in">
+    <div class="max-w-3xl">
+      <span class="inline-block bg-orange/90 px-4 py-1 rounded-full text-sm font-medium mb-6">🏕️ Tu próxima aventura empieza aquí</span>
+      <h1 class="font-display text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+        Vive la naturaleza <br/>
+        <span class="text-orange">como nunca antes</span>
+      </h1>
+      <p class="text-lg md:text-xl text-cream/90 mb-8 max-w-2xl">
+        Parcelas, cabañas rústicas, actividades guiadas y los mejores paisajes de la sierra. Reserva en minutos y desconecta de todo.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="pages/reserva.html" class="inline-flex items-center justify-center gap-2 bg-orange hover:bg-orange-dark text-white px-8 py-4 rounded-xl font-bold text-lg shadow-2xl transition transform hover:scale-105">
+          Reservar ahora
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </a>
+        <a href="pages/servicios.html" class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur text-white px-8 py-4 rounded-xl font-semibold text-lg border-2 border-white/30 transition">
+          Ver servicios
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- Decoración -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg viewBox="0 0 1440 80" class="w-full h-12 md:h-20" preserveAspectRatio="none">
+      <path d="M0,40 C480,80 960,0 1440,40 L1440,80 L0,80 Z" fill="#fef3e2"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ¿CÓMO FUNCIONA? -->
+<section class="py-20 bg-cream">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-forest mb-3">¿Cómo funciona?</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Reservar es muy fácil. Solo sigue estos 3 pasos y prepárate para vivir una experiencia inolvidable.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white rounded-2xl p-8 shadow-md card-hover text-center">
+        <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-orange/10 text-orange flex items-center justify-center text-3xl">📅</div>
+        <h3 class="font-display text-xl font-bold mb-2 text-forest">1. Elige fechas</h3>
+        <p class="text-gray-600">Selecciona tus fechas de entrada y salida, y el tipo de parcela o cabaña que prefieras.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-md card-hover text-center">
+        <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-forest/10 text-forest flex items-center justify-center text-3xl">⭐</div>
+        <h3 class="font-display text-xl font-bold mb-2 text-forest">2. Añade servicios</h3>
+        <p class="text-gray-600">Personaliza tu estadía con servicios extra como wifi, parrilla, kayak o actividades guiadas.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-md card-hover text-center">
+        <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-orange/10 text-orange flex items-center justify-center text-3xl">💳</div>
+        <h3 class="font-display text-xl font-bold mb-2 text-forest">3. Paga y disfruta</h3>
+        <p class="text-gray-600">Confirma tu reserva con pago seguro y prepárate para vivir la mejor aventura al aire libre.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS DESTACADOS -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <span class="inline-block bg-orange/10 text-orange px-4 py-1 rounded-full text-sm font-medium mb-3">Lo más solicitado</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-forest mb-3">Nuestros servicios destacados</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Todo lo que necesitas para una estadía perfecta en contacto con la naturaleza.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover rounded-2xl overflow-hidden border border-gray-100 bg-cream shadow-md">
+        <div class="relative h-48 bg-forest bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=900&q=80&auto=format&fit=crop');">
+          <div class="absolute inset-0 bg-gradient-to-t from-forest/70 via-transparent to-transparent"></div>
+          <span class="absolute top-3 right-3 text-5xl drop-shadow-lg">⛺</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-xl font-bold text-forest mb-2">Parcelas para tienda</h3>
+          <p class="text-gray-600 text-sm mb-4">Amplias parcelas con sombra natural, agua cercana y ambiente tranquilo.</p>
+          <div class="flex justify-between items-center">
+            <span class="text-orange font-bold text-lg">Desde S/ 35 / noche</span>
+            <a href="pages/servicios.html" class="text-forest hover:text-orange text-sm font-semibold">Ver más →</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-hover rounded-2xl overflow-hidden border border-gray-100 bg-cream shadow-md">
+        <div class="relative h-48 bg-forest bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?w=900&q=80&auto=format&fit=crop');">
+          <div class="absolute inset-0 bg-gradient-to-t from-forest/70 via-transparent to-transparent"></div>
+          <span class="absolute top-3 right-3 text-5xl drop-shadow-lg">🏠</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-xl font-bold text-forest mb-2">Cabañas rústicas</h3>
+          <p class="text-gray-600 text-sm mb-4">Confort y naturaleza en un mismo lugar. Madera, literas y calefacción.</p>
+          <div class="flex justify-between items-center">
+            <span class="text-orange font-bold text-lg">Desde S/ 120 / noche</span>
+            <a href="pages/servicios.html" class="text-forest hover:text-orange text-sm font-semibold">Ver más →</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-hover rounded-2xl overflow-hidden border border-gray-100 bg-cream shadow-md">
+        <div class="relative h-48 bg-forest bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?w=900&q=80&auto=format&fit=crop');">
+          <div class="absolute inset-0 bg-gradient-to-t from-forest/70 via-transparent to-transparent"></div>
+          <span class="absolute top-3 right-3 text-5xl drop-shadow-lg">🥾</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-xl font-bold text-forest mb-2">Actividades guiadas</h3>
+          <p class="text-gray-600 text-sm mb-4">Senderismo, rapel, kayak y más con guías certificados.</p>
+          <div class="flex justify-between items-center">
+            <span class="text-orange font-bold text-lg">Desde S/ 45 / persona</span>
+            <a href="pages/servicios.html" class="text-forest hover:text-orange text-sm font-semibold">Ver más →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-10">
+      <a href="pages/servicios.html" class="inline-block bg-forest text-white px-8 py-3 rounded-xl font-semibold hover:bg-forest-light transition">Ver todos los servicios</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="py-20 bg-cream">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-forest mb-3">Lo que dicen nuestros campistas</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl p-6 shadow-md">
+        <div class="flex text-orange mb-3">★★★★★</div>
+        <p class="text-gray-700 italic mb-4">"Una experiencia increíble. La cabaña era perfecta y la atención del personal fue de primera. ¡Volveré pronto!"</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-forest text-white flex items-center justify-center font-bold">M</div>
+          <div>
+            <p class="font-semibold text-forest">María López</p>
+            <p class="text-xs text-gray-500">Lima</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 shadow-md">
+        <div class="flex text-orange mb-3">★★★★★</div>
+        <p class="text-gray-700 italic mb-4">"Las actividades guiadas fueron lo mejor. El guía conoce cada rincón del bosque y la pasamos genial en familia."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-orange text-white flex items-center justify-center font-bold">C</div>
+          <div>
+            <p class="font-semibold text-forest">Carlos Ramírez</p>
+            <p class="text-xs text-gray-500">Arequipa</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 shadow-md">
+        <div class="flex text-orange mb-3">★★★★★</div>
+        <p class="text-gray-700 italic mb-4">"Reservar fue súper fácil y el proceso de pago también. Sin duda, el mejor camping al que he ido."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-earth text-white flex items-center justify-center font-bold">A</div>
+          <div>
+            <p class="font-semibold text-forest">Ana Vargas</p>
+            <p class="text-xs text-gray-500">Trujillo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="py-20 relative bg-forest bg-cover bg-center text-white" style="background-image: linear-gradient(rgba(45, 80, 22, 0.85), rgba(58, 107, 28, 0.85)), url('https://images.unsplash.com/photo-1487730116645-74489c95b41b?w=1920&q=80&auto=format&fit=crop');">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="font-display text-3xl md:text-5xl font-bold mb-4">¿Listo para tu próxima aventura?</h2>
+    <p class="text-cream/90 text-lg mb-8">Reserva hoy y obtén un 10% de descuento en actividades guiadas.</p>
+    <a href="pages/reserva.html" class="inline-flex items-center gap-2 bg-orange hover:bg-orange-dark text-white px-10 py-4 rounded-xl font-bold text-lg shadow-2xl transition transform hover:scale-105">
+      Reservar mi estadía
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+    </a>
+  </div>
+</section>
+
+<div id="app-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/auth.js"></script>
+</body>
+</html>

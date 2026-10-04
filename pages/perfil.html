@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mi perfil — Camping Pinar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { forest: '#2d5016', 'forest-light': '#3a6b1c', orange: '#ea580c', 'orange-dark': '#c2410c', cream: '#fef3e2', earth: '#78350f' },
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Poppins','system-ui','sans-serif'] }
+    }}
+  };
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="bg-cream font-sans text-gray-800">
+
+<div id="app-navbar"></div>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+    <!-- SIDEBAR -->
+    <aside class="lg:col-span-1">
+      <div class="bg-white rounded-2xl shadow-md p-6 sticky top-24">
+        <div class="text-center pb-4 border-b border-gray-100">
+          <div id="avatar" class="w-20 h-20 mx-auto rounded-full bg-forest text-white flex items-center justify-center text-3xl font-bold mb-3">?</div>
+          <h2 id="sidebar-name" class="font-display text-xl font-bold text-forest">—</h2>
+          <p id="sidebar-email" class="text-xs text-gray-500">—</p>
+        </div>
+        <nav class="mt-4 space-y-1">
+          <button data-tab="datos" class="tab-btn w-full text-left px-3 py-2 rounded-lg hover:bg-cream transition font-medium text-forest">👤 Datos personales</button>
+          <button data-tab="reservas" class="tab-btn w-full text-left px-3 py-2 rounded-lg hover:bg-cream transition font-medium text-forest">📅 Mis reservas</button>
+          <button id="btn-logout-sidebar" class="w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 font-medium transition">🚪 Cerrar sesión</button>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="lg:col-span-3 space-y-6">
+
+      <!-- TAB DATOS -->
+      <section data-tab-content="datos" class="bg-white rounded-2xl shadow-md p-6 md:p-8 fade-in">
+        <h2 class="font-display text-2xl font-bold text-forest mb-1">Datos personales</h2>
+        <p class="text-gray-600 text-sm mb-6">Actualiza tu información cuando lo necesites.</p>
+
+        <form id="profile-form" class="grid grid-cols-1 md:grid-cols-2 gap-5" novalidate>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+            <input type="text" id="nombre" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
+            <input type="text" id="apellidos" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">DNI</label>
+            <input type="text" id="dni" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+            <input type="tel" id="telefono" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest focus:border-transparent transition" />
+          </div>
+          <div class="md:col-span-2 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-forest hover:bg-forest-light text-white font-bold rounded-lg transition shadow-md">Guardar cambios</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- TAB RESERVAS -->
+      <section data-tab-content="reservas" class="bg-white rounded-2xl shadow-md p-6 md:p-8 fade-in hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+          <div>
+            <h2 class="font-display text-2xl font-bold text-forest">Mis reservas</h2>
+            <p class="text-gray-600 text-sm">Tu historial completo de reservas.</p>
+          </div>
+          <select id="filter-status" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+            <option value="">Todos los estados</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="confirmada">Confirmada</option>
+            <option value="pagada">Pagada</option>
+            <option value="anulada">Anulada</option>
+            <option value="completada">Completada</option>
+          </select>
+        </div>
+
+        <div id="reservations-list" class="space-y-3"></div>
+
+        <div class="mt-6 pt-6 border-t border-gray-200 text-center">
+          <a href="reserva.html" class="inline-block bg-orange hover:bg-orange-dark text-white font-bold px-6 py-3 rounded-lg transition shadow-md">
+            + Crear nueva reserva
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<div id="app-footer"></div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/reservations.js"></script>
+<script>
+if (!requireAuth()) throw new Error('No auth');
+
+const user = getCurrentUser();
+
+/* ---------- Sidebar ---------- */
+document.getElementById('avatar').textContent = userInitials(user.nombre);
+document.getElementById('sidebar-name').textContent = `${user.nombre} ${user.apellidos}`;
+document.getElementById('sidebar-email').textContent = user.email;
+
+document.getElementById('btn-logout-sidebar').addEventListener('click', logout);
+
+/* ---------- Tabs ---------- */
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('[data-tab-content]');
+function showTab(name) {
+  tabButtons.forEach(b => {
+    const active = b.dataset.tab === name;
+    b.classList.toggle('bg-orange/10', active);
+    b.classList.toggle('text-orange', active);
+  });
+  tabContents.forEach(c => c.classList.toggle('hidden', c.dataset.tabContent !== name));
+}
+tabButtons.forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+showTab('reservas');
+
+/* ---------- Datos personales ---------- */
+function fillProfile() {
+  document.getElementById('nombre').value = user.nombre;
+  document.getElementById('apellidos').value = user.apellidos;
+  document.getElementById('dni').value = user.dni || '';
+  document.getElementById('telefono').value = user.telefono || '';
+  document.getElementById('email').value = user.email;
+}
+fillProfile();
+
+document.getElementById('profile-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const patch = {
+    nombre: document.getElementById('nombre').value.trim(),
+    apellidos: document.getElementById('apellidos').value.trim(),
+    dni: document.getElementById('dni').value.trim(),
+    telefono: document.getElementById('telefono').value.trim(),
+    email: document.getElementById('email').value.trim()
+  };
+  const r = updateProfile(patch);
+  if (!r.ok) { toast(r.message, 'error'); return; }
+  toast('Datos actualizados correctamente', 'success');
+  document.getElementById('sidebar-name').textContent = `${r.user.nombre} ${r.user.apellidos}`;
+  document.getElementById('sidebar-email').textContent = r.user.email;
+  document.getElementById('avatar').textContent = userInitials(r.user.nombre);
+});
+
+/* ---------- Reservas ---------- */
+function renderReservations(filter = '') {
+  const list = getReservationsByUser(user.id).filter(r => !filter || r.estado === filter);
+  const slot = document.getElementById('reservations-list');
+  if (!list.length) {
+    slot.innerHTML = `
+      <div class="text-center py-10 text-gray-500">
+        <p class="text-5xl mb-2">📭</p>
+        <p>No tienes reservas ${filter ? 'con ese estado' : 'todavía'}.</p>
+      </div>`;
+    return;
+  }
+  slot.innerHTML = list.map(r => {
+    const base = getAlojamientoName(r.alojamientoId);
+    return `
+      <div class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-1">
+              <span class="font-mono font-bold text-forest">${r.id}</span>
+              ${statusBadge(r.estado)}
+            </div>
+            <p class="text-sm text-gray-700"><strong>${base}</strong> · ${r.personas} pers.</p>
+            <p class="text-xs text-gray-500">${formatDate(r.checkIn)} → ${formatDate(r.checkOut)} · ${r.noches} noche(s)</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <p class="text-xs text-gray-500">Total</p>
+              <p class="font-bold text-orange text-lg">${formatPEN(r.total)}</p>
+            </div>
+            <a href="detalle-reserva.html?id=${r.id}" class="px-4 py-2 bg-forest text-white text-sm font-semibold rounded-lg hover:bg-forest-light transition">Ver detalle</a>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+renderReservations();
+
+document.getElementById('filter-status').addEventListener('change', (e) => renderReservations(e.target.value));
+</script>
+</body>
+</html>

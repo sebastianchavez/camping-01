@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Detalle de reserva — Camping Pinar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { forest: '#2d5016', 'forest-light': '#3a6b1c', orange: '#ea580c', 'orange-dark': '#c2410c', cream: '#fef3e2', earth: '#78350f' },
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Poppins','system-ui','sans-serif'] }
+    }}
+  };
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="bg-cream font-sans text-gray-800">
+
+<div id="app-navbar"></div>
+
+<main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <a href="perfil.html" class="inline-flex items-center gap-1 text-forest hover:text-orange mb-4 font-medium">
+    ← Volver a mis reservas
+  </a>
+
+  <div id="detail" class="bg-white rounded-2xl shadow-xl p-6 md:p-8 fade-in">
+    <p class="text-gray-500">Cargando...</p>
+  </div>
+</main>
+
+<div id="app-footer"></div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/reservations.js"></script>
+<script>
+if (!requireAuth()) throw new Error('No auth');
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+const r = id ? getReservationById(id) : null;
+const slot = document.getElementById('detail');
+
+if (!r || r.userId !== getSession().userId) {
+  slot.innerHTML = `
+    <div class="text-center py-12">
+      <p class="text-5xl mb-3">❓</p>
+      <p class="text-gray-600">No se encontró la reserva.</p>
+      <a href="perfil.html" class="inline-block mt-4 px-5 py-2 bg-forest text-white rounded-lg">Volver a mis reservas</a>
+    </div>
+  `;
+} else {
+  const base = SERVICES_CATALOG.find(s => s.id === r.alojamientoId);
+  const extras = r.extrasIds.map(id => SERVICES_CATALOG.find(s => s.id === id)).filter(Boolean);
+  const canPay = reservationCanBePaid(r);
+  const canCancel = reservationCanBeCancelled(r);
+
+  slot.innerHTML = `
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-5 border-b border-gray-200 mb-6">
+      <div>
+        <p class="text-xs text-gray-500 uppercase">Código de reserva</p>
+        <p class="font-mono text-2xl font-bold text-forest">${r.id}</p>
+        <p class="text-xs text-gray-500 mt-1">${formatDate(r.createdAt, true)}</p>
+      </div>
+      ${statusBadge(r.estado)}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div>
+        <h3 class="font-semibold text-forest mb-3">Datos de la estadía</h3>
+        <dl class="space-y-2 text-sm">
+          <div class="flex justify-between"><dt class="text-gray-500">Alojamiento</dt><dd class="font-semibold">${base ? base.name : '—'}</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Entrada</dt><dd class="font-semibold">${formatDate(r.checkIn)}</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Salida</dt><dd class="font-semibold">${formatDate(r.checkOut)}</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Noches</dt><dd class="font-semibold">${r.noches}</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Personas</dt><dd class="font-semibold">${r.personas}</dd></div>
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="font-semibold text-forest mb-3">Servicios extra</h3>
+        ${extras.length ? `
+          <ul class="space-y-2 text-sm">
+            ${extras.map(e => `
+              <li class="flex justify-between">
+                <span>${e.name} <span class="text-gray-500 text-xs">(${formatPEN(e.price)} × ${r.noches})</span></span>
+                <span class="font-semibold">${formatPEN(e.price * r.noches)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        ` : '<p class="text-sm text-gray-500">No hay servicios extra.</p>'}
+      </div>
+    </div>
+
+    <div class="bg-cream rounded-xl p-5 mb-6">
+      <h3 class="font-semibold text-forest mb-3">Desglose de precios</h3>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between">
+          <span>${base ? base.name : 'Alojamiento'} <span class="text-gray-500 text-xs">(${formatPEN(base ? base.price : 0)} × ${r.noches} noches)</span></span>
+          <span class="font-semibold">${formatPEN(r.subtotalBase)}</span>
+        </div>
+        ${extras.map(e => `
+          <div class="flex justify-between text-gray-700">
+            <span>${e.name} <span class="text-gray-500 text-xs">(${formatPEN(e.price)} × ${r.noches})</span></span>
+            <span class="font-semibold">${formatPEN(e.price * r.noches)}</span>
+          </div>
+        `).join('')}
+        <div class="border-t-2 border-forest mt-3 pt-3 flex justify-between items-center">
+          <span class="font-bold text-forest">TOTAL</span>
+          <span class="text-2xl font-bold text-orange">${formatPEN(r.total)}</span>
+        </div>
+      </div>
+    </div>
+
+    ${r.pago ? `
+      <div class="bg-green-50 border border-green-200 rounded-xl p-5 mb-6">
+        <h3 class="font-semibold text-green-800 mb-2">💳 Información de pago</h3>
+        <dl class="grid grid-cols-2 gap-2 text-sm">
+          <dt class="text-green-700">N° operación:</dt><dd class="font-mono font-semibold">${r.pago.operacion}</dd>
+          <dt class="text-green-700">Método:</dt><dd class="font-semibold">${paymentMethodLabel(r.pago.metodo)}</dd>
+          <dt class="text-green-700">Fecha:</dt><dd class="font-semibold">${formatDate(r.pago.fecha, true)}</dd>
+          <dt class="text-green-700">Monto:</dt><dd class="font-bold text-green-800">${formatPEN(r.pago.monto)}</dd>
+        </dl>
+      </div>
+    ` : ''}
+
+    ${r.cancelledAt ? `
+      <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-sm text-red-800">
+        ⛔ Reserva anulada el <strong>${formatDate(r.cancelledAt, true)}</strong>
+      </div>
+    ` : ''}
+
+    <div class="flex flex-col sm:flex-row gap-3">
+      ${canPay ? `
+        <a href="pago.html?id=${r.id}" class="flex-1 px-6 py-3 bg-orange hover:bg-orange-dark text-white font-bold rounded-lg text-center transition shadow-md">
+          💳 Pagar reserva
+        </a>
+      ` : ''}
+      ${canCancel ? `
+        <button id="btn-cancel" class="flex-1 px-6 py-3 border-2 border-red-300 text-red-600 hover:bg-red-50 font-bold rounded-lg transition">
+          ⛔ Anular reserva
+        </button>
+      ` : ''}
+      <a href="perfil.html" class="flex-1 px-6 py-3 border border-gray-300 hover:bg-gray-100 font-semibold rounded-lg text-center transition">
+        ← Volver
+      </a>
+    </div>
+  `;
+
+  const btnCancel = document.getElementById('btn-cancel');
+  if (btnCancel) {
+    btnCancel.addEventListener('click', () => {
+      modal({
+        title: '¿Anular esta reserva?',
+        body: `La reserva <strong>${r.id}</strong> será anulada. Esta acción no se puede deshacer.`,
+        confirmText: 'Sí, anular',
+        cancelText: 'No, mantener',
+        danger: true,
+        onConfirm: () => {
+          const result = cancelReservation(r.id);
+          if (!result.ok) { toast(result.message, 'error'); return; }
+          toast('Reserva anulada correctamente', 'success');
+          setTimeout(() => window.location.reload(), 700);
+        }
+      });
+    });
+  }
+}
+</script>
+</body>
+</html>
