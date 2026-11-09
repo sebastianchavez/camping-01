@@ -12,7 +12,7 @@ const BASE = IS_IN_PAGES ? '../' : './';
 
 /* ---------- Helpers de formato ---------- */
 function formatPEN(n) {
-  return 'S/ ' + Number(n || 0).toFixed(2);
+  return 'CLP$ ' + Number(n || 0).toLocaleString('es-CL', { maximumFractionDigits: 0 });
 }
 
 function formatDate(d, withTime = false) {
@@ -21,13 +21,13 @@ function formatDate(d, withTime = false) {
   const opts = withTime
     ? { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }
     : { day: '2-digit', month: 'short', year: 'numeric' };
-  return date.toLocaleDateString('es-PE', opts);
+  return date.toLocaleDateString('es-CL', opts);
 }
 
 function formatDateShort(d) {
   const date = new Date(d);
   if (isNaN(date.getTime())) return '—';
-  return date.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  return date.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
 function diffDays(checkIn, checkOut) {
@@ -240,9 +240,9 @@ function renderFooter() {
         <div>
           <h4 class="font-bold mb-4 text-orange">Contacto</h4>
           <ul class="space-y-2 text-sm text-cream/80">
-            <li>📍 Carretera Central Km 8, Junín</li>
-            <li>📞 +51 987 654 321</li>
-            <li>✉️ info@campingpinar.pe</li>
+            <li>📍 Camino al Volcán Km 8, Cajón del Maipo</li>
+            <li>📞 +56 9 8765 4321</li>
+            <li>✉️ info@campingpinar.cl</li>
             <li>🕐 Lun-Dom: 8:00 a 20:00</li>
           </ul>
         </div>

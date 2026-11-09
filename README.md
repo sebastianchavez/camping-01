@@ -71,7 +71,7 @@ camping-01/
 - ✅ Políticas de privacidad
 - ✅ Mi perfil (datos editables + historial con filtros)
 - ✅ Detalle de reserva (con anular y desglose de precios)
-- ✅ Pago (tarjeta, Yape, Plin, transferencia)
+- ✅ Pago (tarjeta, Transferencia, Depósito, transferencia)
 - ✅ Confirmación de pago (con comprobante imprimible)
 
 ## 🎨 Paleta de colores

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-CL">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,14 +54,14 @@
             <input type="radio" name="method" value="yape" class="peer sr-only method-radio" />
             <div class="border-2 border-gray-200 peer-checked:border-orange peer-checked:bg-orange/5 rounded-xl p-3 text-center transition hover:border-forest">
               <div class="text-3xl mb-1">📱</div>
-              <p class="text-xs font-semibold">Yape</p>
+              <p class="text-xs font-semibold">Transferencia</p>
             </div>
           </label>
           <label class="cursor-pointer">
             <input type="radio" name="method" value="plin" class="peer sr-only method-radio" />
             <div class="border-2 border-gray-200 peer-checked:border-orange peer-checked:bg-orange/5 rounded-xl p-3 text-center transition hover:border-forest">
               <div class="text-3xl mb-1">💜</div>
-              <p class="text-xs font-semibold">Plin</p>
+              <p class="text-xs font-semibold">Depósito</p>
             </div>
           </label>
           <label class="cursor-pointer">
@@ -161,7 +161,7 @@ if (!r || r.userId !== getSession().userId) {
       }
       if (method === 'yape' || method === 'plin') {
         return `
-          <h2 class="font-display text-xl font-bold text-forest mb-4">2. Pago con ${method === 'yape' ? 'Yape' : 'Plin'}</h2>
+          <h2 class="font-display text-xl font-bold text-forest mb-4">2. Pago con ${method === 'yape' ? 'Transferencia' : 'Depósito'}</h2>
           <div class="bg-cream rounded-xl p-6 text-center">
             <p class="text-sm text-gray-700 mb-4">Escanea el código QR desde tu app o realiza la transferencia al siguiente número:</p>
             <div class="bg-forest text-white inline-block px-8 py-4 rounded-xl text-3xl font-bold tracking-widest mb-3">
@@ -179,7 +179,7 @@ if (!r || r.userId !== getSession().userId) {
         return `
           <h2 class="font-display text-xl font-bold text-forest mb-4">2. Transferencia bancaria</h2>
           <div class="bg-cream rounded-xl p-6 space-y-3 text-sm">
-            <div class="flex justify-between"><span class="text-gray-500">Banco:</span><strong>BCP</strong></div>
+            <div class="flex justify-between"><span class="text-gray-500">Banco:</span><strong>BancoEstado</strong></div>
             <div class="flex justify-between"><span class="text-gray-500">Cuenta:</span><strong class="font-mono">193-1234567-0-12</strong></div>
             <div class="flex justify-between"><span class="text-gray-500">CCI:</span><strong class="font-mono">002-193-001234567012-15</strong></div>
             <div class="flex justify-between"><span class="text-gray-500">Titular:</span><strong>Camping Pinar S.A.C.</strong></div>

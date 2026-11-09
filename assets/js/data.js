@@ -5,11 +5,11 @@
    =========================================================== */
 
 const STORAGE_KEYS = {
-  USERS: 'camping_users',
-  SESSION: 'camping_session',
-  RESERVATIONS: 'camping_reservations',
-  PAYMENTS: 'camping_payments',
-  SEED_DONE: 'camping_seed_done'
+  USERS: 'camping_users_clp_v1',
+  SESSION: 'camping_session_clp_v1',
+  RESERVATIONS: 'camping_reservations_clp_v1',
+  PAYMENTS: 'camping_payments_clp_v1',
+  SEED_DONE: 'camping_seed_done_clp_v1'
 };
 
 /* ---------- Catálogo de servicios ---------- */
@@ -18,7 +18,7 @@ const SERVICES_CATALOG = [
     id: 'parcela-tienda',
     name: 'Parcela para tienda',
     description: 'Amplia parcela con sombra natural para instalar tu tienda de campaña.',
-    price: 35,
+    price: 8750,
     icon: 'tent',
     category: 'alojamiento',
     type: 'base'
@@ -27,7 +27,7 @@ const SERVICES_CATALOG = [
     id: 'parcela-caravana',
     name: 'Parcela para caravana',
     description: 'Parcela con toma eléctrica, agua y desagüe para tu caravana o RV.',
-    price: 60,
+    price: 15000,
     icon: 'caravan',
     category: 'alojamiento',
     type: 'base'
@@ -36,7 +36,7 @@ const SERVICES_CATALOG = [
     id: 'cabana',
     name: 'Cabaña rústica',
     description: 'Cabaña de madera equipada con literas, mesa y calefacción.',
-    price: 120,
+    price: 30000,
     icon: 'cabin',
     category: 'alojamiento',
     type: 'base'
@@ -45,7 +45,7 @@ const SERVICES_CATALOG = [
     id: 'electricidad',
     name: 'Electricidad',
     description: 'Toma de corriente 220V en tu parcela.',
-    price: 10,
+    price: 2500,
     icon: 'bolt',
     category: 'extra',
     type: 'extra'
@@ -54,7 +54,7 @@ const SERVICES_CATALOG = [
     id: 'wifi',
     name: 'Wifi',
     description: 'Acceso a internet de alta velocidad durante toda tu estancia.',
-    price: 8,
+    price: 2000,
     icon: 'wifi',
     category: 'extra',
     type: 'extra'
@@ -63,7 +63,7 @@ const SERVICES_CATALOG = [
     id: 'parrilla',
     name: 'Parrilla',
     description: 'Parrilla individual con carbón y utensilios.',
-    price: 15,
+    price: 3750,
     icon: 'grill',
     category: 'extra',
     type: 'extra'
@@ -72,7 +72,7 @@ const SERVICES_CATALOG = [
     id: 'actividades',
     name: 'Actividades guiadas',
     description: 'Senderismo, rapel y orientación nocturna con guías certificados.',
-    price: 45,
+    price: 11250,
     icon: 'compass',
     category: 'extra',
     type: 'extra'
@@ -81,7 +81,7 @@ const SERVICES_CATALOG = [
     id: 'restaurante',
     name: 'Restaurante',
     description: 'Desayuno, almuerzo y cena con comida típica de la región.',
-    price: 30,
+    price: 7500,
     icon: 'restaurant',
     category: 'extra',
     type: 'extra'
@@ -90,7 +90,7 @@ const SERVICES_CATALOG = [
     id: 'kayak',
     name: 'Kayak y pesca',
     description: 'Alquiler de kayak y equipo de pesca para el lago.',
-    price: 25,
+    price: 6250,
     icon: 'kayak',
     category: 'extra',
     type: 'extra'
@@ -108,8 +108,8 @@ const RESERVATION_STATUS = {
 
 const PAYMENT_METHODS = {
   TARJETA:    { code: 'tarjeta',    label: 'Tarjeta de crédito/débito' },
-  YAPE:       { code: 'yape',       label: 'Yape' },
-  PLIN:       { code: 'plin',       label: 'Plin' },
+  YAPE:       { code: 'yape',       label: 'Transferencia' },
+  PLIN:       { code: 'plin',       label: 'Depósito' },
   TRANSFERENCIA: { code: 'transferencia', label: 'Transferencia bancaria' }
 };
 
@@ -122,7 +122,7 @@ const SEED_USERS = [
     dni: '45678901',
     email: 'demo@camping.com',
     password: '123456',
-    telefono: '+51 987 654 321',
+    telefono: '+56 9 8765 4321',
     createdAt: '2026-08-15T10:00:00.000Z'
   }
 ];
@@ -137,16 +137,16 @@ const SEED_RESERVATIONS = [
     checkOut: '2026-09-15',
     noches: 3,
     personas: 4,
-    subtotalBase: 360,
-    subtotalExtras: 255,
-    total: 615,
+    subtotalBase: 90000,
+    subtotalExtras: 63750,
+    total: 153750,
     estado: 'pagada',
     createdAt: '2026-08-20T14:30:00.000Z',
     pago: {
       operacion: 'OP-001234',
       metodo: 'tarjeta',
       fecha: '2026-08-20T14:35:00.000Z',
-      monto: 615
+      monto: 153750
     }
   },
   {
@@ -158,9 +158,9 @@ const SEED_RESERVATIONS = [
     checkOut: '2026-10-04',
     noches: 2,
     personas: 2,
-    subtotalBase: 70,
-    subtotalExtras: 46,
-    total: 116,
+    subtotalBase: 17500,
+    subtotalExtras: 11500,
+    total: 29000,
     estado: 'pendiente',
     createdAt: '2026-09-25T09:15:00.000Z',
     pago: null
@@ -174,16 +174,16 @@ const SEED_RESERVATIONS = [
     checkOut: '2026-07-14',
     noches: 4,
     personas: 3,
-    subtotalBase: 240,
-    subtotalExtras: 140,
-    total: 380,
+    subtotalBase: 60000,
+    subtotalExtras: 35000,
+    total: 95000,
     estado: 'completada',
     createdAt: '2026-06-30T18:00:00.000Z',
     pago: {
       operacion: 'OP-000987',
       metodo: 'yape',
       fecha: '2026-06-30T18:05:00.000Z',
-      monto: 380
+      monto: 95000
     }
   }
 ];
